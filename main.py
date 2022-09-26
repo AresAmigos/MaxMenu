@@ -119,11 +119,11 @@ def changecolor():
 def removestup():
     darkness = subprocess.getoutput(f'if exist "{startup}\{filename}" (echo ok) else (echo no)')
     if darkness == 'no':
-        print("This file isn't in startup")
+        print("This file isn't in the startup")
         sleep(1.2)
     else:
         subprocess.getoutput(f'if exist "{startup}\{filename}" del "{startup}\{filename}"/q')
-        print("File removed from startup")
+        print("File removed from the startup")
         sleep(1)
 
 while True:
