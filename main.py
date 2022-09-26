@@ -7,12 +7,12 @@ from colorama import Fore, Back, Style
 from colorama import init
 init()
 choicedcolor = Fore.RESET
-print(Fore.GREEN + "███╗░░░███╗░█████╗░██╗░░██╗      ███╗░░░███╗███████╗███╗░░██╗██╗░░░██╗")
-print("████╗░████║██╔══██╗╚██╗██╔╝      ████╗░████║██╔════╝████╗░██║██║░░░██║")
-print("██╔████╔██║███████║░╚███╔╝░      ██╔████╔██║█████╗░░██╔██╗██║██║░░░██║")
-print("██║╚██╔╝██║██╔══██║░██╔██╗░      ██║╚██╔╝██║██╔══╝░░██║╚████║██║░░░██║")
-print("██║░╚═╝░██║██║░░██║██╔╝╚██╗      ██║░╚═╝░██║███████╗██║░╚███║╚██████╔╝")
-print("╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝░░╚═╝      ╚═╝░░░░░╚═╝╚══════╝╚═╝░░╚══╝░╚═════╝░\n" + Fore.RESET)
+#print(Fore.GREEN + "███╗░░░███╗░█████╗░██╗░░██╗      ███╗░░░███╗███████╗███╗░░██╗██╗░░░██╗")
+#print("████╗░████║██╔══██╗╚██╗██╔╝      ████╗░████║██╔════╝████╗░██║██║░░░██║")
+#print("██╔████╔██║███████║░╚███╔╝░      ██╔████╔██║█████╗░░██╔██╗██║██║░░░██║")
+#print("██║╚██╔╝██║██╔══██║░██╔██╗░      ██║╚██╔╝██║██╔══╝░░██║╚████║██║░░░██║")
+#print("██║░╚═╝░██║██║░░██║██╔╝╚██╗      ██║░╚═╝░██║███████╗██║░╚███║╚██████╔╝")
+#print("╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝░░╚═╝      ╚═╝░░░░░╚═╝╚══════╝╚═╝░░╚══╝░╚═════╝░\n" + Fore.RESET)
 
 
 def after():
@@ -50,6 +50,7 @@ def changepws():
             pw = input("Enter new password: ")
             try:
                 subprocess.getoutput(f'net user %username% {pw}')
+                break
             except:
                 print("Error, open the file in admin mode and retry")
                 break
@@ -68,7 +69,7 @@ def changewallpaper():
         if verify == "no":
             print(Fore.RED + '\nError 404\nFile not found' + choicedcolor)
         elif verify == "yes":
-            subprocess.getoutput('reg add "HKCU\Control Panel\Desktop" /v Wallpaper /t REG_SZ /d "{wallpaper}" /f')
+            subprocess.getoutput(f'reg add "HKCU\Control Panel\Desktop" /v Wallpaper /t REG_SZ /d "{wallpaper}" /f')
             subprocess.getoutput('RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters')
             print("If it doesn't work reboot computer")
             dw = input("Reboot computer? y/n ")
@@ -102,12 +103,19 @@ def changecolor():
         
 
 while True:
+    print(Fore.GREEN + "███╗░░░███╗░█████╗░██╗░░██╗      ███╗░░░███╗███████╗███╗░░██╗██╗░░░██╗")
+    print("████╗░████║██╔══██╗╚██╗██╔╝      ████╗░████║██╔════╝████╗░██║██║░░░██║")
+    print("██╔████╔██║███████║░╚███╔╝░      ██╔████╔██║█████╗░░██╔██╗██║██║░░░██║")
+    print("██║╚██╔╝██║██╔══██║░██╔██╗░      ██║╚██╔╝██║██╔══╝░░██║╚████║██║░░░██║")
+    print("██║░╚═╝░██║██║░░██║██╔╝╚██╗      ██║░╚═╝░██║███████╗██║░╚███║╚██████╔╝")
+    print("╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝░░╚═╝      ╚═╝░░░░░╚═╝╚══════╝╚═╝░░╚══╝░╚═════╝░\n" + choicedcolor)
     print(choicedcolor + "============ Max Menù for Windows ============")
     print("1.turn off pc                      2.reboot pc")
     print("3.disconnect user         4.hibernation of pc ")
     print("5.search on google               6.search link")
     print("7.show my ip                 8.change password")
     print("9.change wallpaper             10.change color")
+    print("11.shell mode                                 ")
 
     c = input("\nEnter number function: ")
     
@@ -115,6 +123,8 @@ while True:
         print("Goodbye!")
         input("Press any keys to exit...")
         sys.exit()
+    elif c in ("cls","clear"):
+        os.system('cls')
     if c == "1":
         turnoff()
         after()
@@ -145,4 +155,20 @@ while True:
     elif c == "10":
         changecolor()
         after()
-        
+    elif c == "11":
+        print('\n')
+        while True:
+            pwd = os.getcwd()
+            command = input(pwd + '>')
+            commands = command.split()
+            if commands[0] in ('cd','chdir'):
+                os.chdir(commands[1])
+                print('\n')
+            elif command == 'cd..':
+                os.chdir('..')
+                print('\n')
+            elif command == 'exit':
+                os.system('cls')
+                break
+            else:
+                os.system(command)
