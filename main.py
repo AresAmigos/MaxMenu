@@ -120,11 +120,11 @@ def removestup():
     darkness = subprocess.getoutput(f'if exist "{startup}\{filename}" (echo ok) else (echo no)')
     if darkness == 'no':
         print("This file isn't in startup")
-        sleep(1)
+        sleep(1.2)
     else:
         subprocess.getoutput(f'if exist "{startup}\{filename}" del "{startup}\{filename}"/q')
         print("File removed from startup")
-        sleep(0.7)
+        sleep(1)
 
 while True:
     print(Fore.GREEN + "███╗░░░███╗░█████╗░██╗░░██╗      ███╗░░░███╗███████╗███╗░░██╗██╗░░░██╗")
