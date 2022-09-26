@@ -5,6 +5,20 @@ from time import sleep
 import sys
 from colorama import Fore, Back, Style
 from colorama import init
+
+appdatar = os.environ["APPDATA"]
+startup = appdatar + '\Microsoft\Windows\Start Menu\Programs\Startup'
+filename = os.path.basename(__file__)
+#C:\Users\free\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
+darkness = subprocess.getoutput(f'if exist "{startup}\{filename}" (echo ok) else (echo no)')
+if os.getcwd() != startup:
+    if darkness == "no":
+        choice = input("Do you want add this program to the startup? y/n ")
+        if choice in ('y','Y','yes','Yes'):
+            subprocess.getoutput(f'copy "{filename}" "{startup}\{filename}"/y')
+            os.system('cls')
+        else:
+            os.system('cls')
 init()
 choicedcolor = Fore.RESET
 #print(Fore.GREEN + "███╗░░░███╗░█████╗░██╗░░██╗      ███╗░░░███╗███████╗███╗░░██╗██╗░░░██╗")
@@ -16,7 +30,7 @@ choicedcolor = Fore.RESET
 
 
 def after():
-    sleep(2)
+    sleep(1)
     os.system('cls')
 def turnoff():
     subprocess.getoutput('shutdown /s /c "To the next time %username% :D" /t 5')
@@ -154,7 +168,7 @@ while True:
         after()
     elif c == "10":
         changecolor()
-        after()
+        os.system('cls')
     elif c == "11":
         print('\n')
         while True:
