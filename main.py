@@ -7,6 +7,7 @@ from colorama import Fore, Back, Style
 from colorama import init
 
 appdatar = os.environ["APPDATA"]
+#startup
 startup = appdatar + '\Microsoft\Windows\Start Menu\Programs\Startup'
 filename = os.path.basename(__file__)
 darkness = subprocess.getoutput(f'if exist "{startup}\{filename}" (echo ok) else (echo no)')
