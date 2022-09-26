@@ -113,6 +113,7 @@ def changecolor():
         choicedcolor = Fore.WHITE
     else:
         print(Fore.RED + 'Unmatched answer' + choicedcolor)
+        sleep(2)
         
 
 while True:
