@@ -9,7 +9,9 @@ from colorama import init
 appdatar = os.environ["APPDATA"]
 startup = appdatar + '\Microsoft\Windows\Start Menu\Programs\Startup'
 filename = os.path.basename(__file__)
+#C:\Users\free\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
 darkness = subprocess.getoutput(f'if exist "{startup}\{filename}" (echo ok) else (echo no)')
+
 if os.getcwd() != startup:
     if darkness == "no":
         choice = input("Do you want add this program to the startup? y/n ")
@@ -114,7 +116,15 @@ def changecolor():
     else:
         print(Fore.RED + 'Unmatched answer' + choicedcolor)
         sleep(0.7)
-        
+def removestup():
+    darkness = subprocess.getoutput(f'if exist "{startup}\{filename}" (echo ok) else (echo no)')
+    if darkness == 'no':
+        print("This file isn't in startup")
+        sleep(1)
+    else:
+        subprocess.getoutput(f'if exist "{startup}\{filename}" del "{startup}\{filename}"/q')
+        print("File removed from startup")
+        sleep(0.7)
 
 while True:
     print(Fore.GREEN + "███╗░░░███╗░█████╗░██╗░░██╗      ███╗░░░███╗███████╗███╗░░██╗██╗░░░██╗")
@@ -129,7 +139,7 @@ while True:
     print("5.search on google               6.search link")
     print("7.show my ip                 8.change password")
     print("9.change wallpaper             10.change color")
-    print("11.shell mode                                 ")
+    print("11.shell mode           12.remove from startup")
 
     c = input("\nEnter number function: ")
     
@@ -186,3 +196,6 @@ while True:
                 break
             else:
                 os.system(command)
+    elif c == "12":
+        removestup()
+        os.system('cls')
