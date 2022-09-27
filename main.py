@@ -204,27 +204,27 @@ def lock():
             lockpw = open(appdatar + '\MaxMenu\password.txt',"w")
             lockpw.write(password)
             lockpw.close()
-    else:
-        oldpassword = input('Enter the old password: ')
-        pwcrypted = open(appdatar + '\MaxMenu\password.txt',"r")
-        pwdelcazzo = (pwcrypted.read())
-        pwcrypted.close()
-        if oldpassword != pwdelcazzo:
+        else:
+            oldpassword = input('Enter the old password: ')
+            pwcrypted = open(appdatar + '\MaxMenu\password.txt',"r")
+            pwdelcazzo = (pwcrypted.read())
+            pwcrypted.close()
+            if oldpassword != pwdelcazzo:
+                if oldpassword != 'exit':
+                    print('\nEnter "exit" to exit')
+            while oldpassword != pwdelcazzo:
+                if oldpassword == 'exit':
+                    pwcrypted.close()
+                    break
+                oldpassword = input('\nYou have entered a wrong password.\nEnter the old password: ')
             if oldpassword != 'exit':
-                print('\nEnter "exit" to exit')
-        while oldpassword != pwdelcazzo:
-            if oldpassword == 'exit':
-                pwcrypted.close()
-                break
-            oldpassword = input('\nYou have entered a wrong password.\nEnter the old password: ')
-        if oldpassword != 'exit':
-            newpassword = input('Enter new password: ')
-            while newpassword == 'exit':
-                print('\nPassword cannot be "exit"')
-                newpassword = input('\nEnter a password: ')
-            lockpw = open(appdatar + '\MaxMenu\password.txt',"w")
-            lockpw.write(newpassword)
-            lockpw.close()
+                newpassword = input('Enter new password: ')
+                while newpassword == 'exit':
+                    print('\nPassword cannot be "exit"')
+                    newpassword = input('\nEnter a password: ')
+                lockpw = open(appdatar + '\MaxMenu\password.txt',"w")
+                lockpw.write(newpassword)
+                lockpw.close()
 def unlock():
     oldpassword = input('Enter the old password: ')
     pwcrypted = open(appdatar + '\MaxMenu\password.txt',"r")
