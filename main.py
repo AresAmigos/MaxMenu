@@ -178,7 +178,6 @@ def lock():
         subprocess.getoutput('md "%appdata%\MaxMenu"')
         subprocess.getoutput('attrib +h "%appdata%\MaxMenu"')
         subprocess.getoutput('type nul > "%appdata%\MaxMenu\password.txt"')
-        subprocess.getoutput('attrib +h "%appdata%\MaxMenu\password.txt"')
         password = input('Enter a password: ')
         while password == 'exit':
             print('\nPassword cannot be "exit"')
@@ -194,7 +193,6 @@ def lock():
             subprocess.getoutput('if not exist "%appdata%\MaxMenu" md "%appdata%\MaxMenu"')
             subprocess.getoutput('attrib +h "%appdata%\MaxMenu"')
             subprocess.getoutput('type nul > "%appdata%\MaxMenu\password.txt"')
-            subprocess.getoutput('attrib + h "%appdata%\MaxMenu\password.txt"')
             pwcrypted = open(appdatar + '\MaxMenu\password.txt',"r")
             pwdelcazzo = (pwcrypted.read())
             pwcrypted.close()
@@ -346,4 +344,3 @@ while True:
     elif c == "15":
         addremove()
         after()
-        
