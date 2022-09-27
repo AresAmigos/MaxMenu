@@ -14,7 +14,6 @@ appdatar = os.environ["APPDATA"]
 systemdrive = os.environ["SYSTEMDRIVE"]
 startup = appdatar + '\Microsoft\Windows\Start Menu\Programs\Startup'
 filename = os.path.basename(__file__)
-#C:\Users\free\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
 darkness = subprocess.getoutput(f'if exist "{startup}\{filename}" (echo ok) else (echo no)')
 
 porta = subprocess.getoutput('if exist "%appdata%\MaxMenu\password.txt" echo lol')
