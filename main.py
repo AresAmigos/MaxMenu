@@ -7,7 +7,8 @@ from colorama import Fore, Back, Style
 from colorama import init
 
 
-
+subprocess.getoutput('if not exist "%appdata%\MaxMenu" md "%appdata%\MaxMenu"')
+subprocess.getoutput('attrib +h "%appdata%\MaxMenu"')
     
 
 appdatar = os.environ["APPDATA"]
@@ -15,6 +16,8 @@ systemdrive = os.environ["SYSTEMDRIVE"]
 startup = appdatar + '\Microsoft\Windows\Start Menu\Programs\Startup'
 filename = os.path.basename(__file__)
 darkness = subprocess.getoutput(f'if exist "{startup}\{filename}" (echo ok) else (echo no)')
+
+
 
 porta = subprocess.getoutput('if exist "%appdata%\MaxMenu\password.txt" echo lol')
 if porta == 'lol':
@@ -33,14 +36,37 @@ if porta == 'lol':
             auth = input('\nWrong password.\nEnter the password: ')
         os.system('cls')
 
-if os.getcwd() != startup:
-    if darkness == "no":
-        choice = input("Do you want add this program to the startup? y/n ")
-        if choice in ('y','Y','yes','Yes'):
-            subprocess.getoutput(f'copy "{filename}" "{startup}\{filename}"/y')
-            os.system('cls')
-        else:
-            os.system('cls')
+superverify = subprocess.getoutput('if not exist "%appdata%\MaxMenu\startupverify.txt" echo no')
+if superverify == 'no':
+    subprocess.getoutput('type nul > "%appdata%\MaxMenu\startupverify.txt"')
+    startupverifyinit = open(appdatar + '\MaxMenu\startupverify.txt',"w")
+    startupverifyinit.write('enabled')
+    startupverifyinit.close()
+    startupconfirmed = 'enable ask to add this to the startup'
+startupverify = open(appdatar + '\MaxMenu\startupverify.txt',"r")
+startupverifytext = (startupverify.read())
+startupverify.close()
+if True:
+    if startupverifytext == 'enabled': 
+        startupconfirmed = 'disable ask to add this to the startup'
+        if os.getcwd() != startup:
+            if darkness == "no":
+                choice = input("Do you want add this program to the startup? y/n ")
+                if choice in ('y','Y','yes','Yes'):
+                    subprocess.getoutput(f'copy "{filename}" "{startup}\{filename}"/y')
+                    os.system('cls')
+                else:
+                    os.system('cls')
+    elif startupverifytext == 'disabled':
+        startupconfirmed = 'enable ask to add this to the startup'
+    else:
+        startupverifyerror = open(appdatar + '\MaxMenu\startupverify.txt',"w")
+        startupverifyerror.write('disabled')
+        startupverifyerror.close()
+        startupconfirmed = 'enable ask to add this to the startup'
+        
+
+
 init()
 choicedcolor = Fore.RESET
 #print(Fore.GREEN + "███╗░░░███╗░█████╗░██╗░░██╗      ███╗░░░███╗███████╗███╗░░██╗██╗░░░██╗")
@@ -152,7 +178,7 @@ def lock():
         subprocess.getoutput('md "%appdata%\MaxMenu"')
         subprocess.getoutput('attrib +h "%appdata%\MaxMenu"')
         subprocess.getoutput('type nul > "%appdata%\MaxMenu\password.txt"')
-        subprocess.getoutput('attrib + h "%appdata%\MaxMenu\password.txt"')
+        subprocess.getoutput('attrib +h "%appdata%\MaxMenu\password.txt"')
         password = input('Enter a password: ')
         while password == 'exit':
             print('\nPassword cannot be "exit"')
@@ -168,7 +194,7 @@ def lock():
             subprocess.getoutput('if not exist "%appdata%\MaxMenu" md "%appdata%\MaxMenu"')
             subprocess.getoutput('attrib +h "%appdata%\MaxMenu"')
             subprocess.getoutput('type nul > "%appdata%\MaxMenu\password.txt"')
-            subprocess.getoutput('attrib +h "%appdata%\MaxMenu\password.txt"')
+            subprocess.getoutput('attrib + h "%appdata%\MaxMenu\password.txt"')
             pwcrypted = open(appdatar + '\MaxMenu\password.txt',"r")
             pwdelcazzo = (pwcrypted.read())
             pwcrypted.close()
@@ -216,6 +242,25 @@ def unlock():
         lockpw = open(appdatar + '\MaxMenu\password.txt',"w")
         lockpw.write('')
         lockpw.close()
+def addremove():
+    global startupconfirmed
+    startupverify = open(appdatar + '\MaxMenu\startupverify.txt',"r")
+    startupverifytext = (startupverify.read())
+    startupverify.close()
+    if startupverifytext == 'enabled':
+        startupverify.close()
+        startupverifyerror = open(appdatar + '\MaxMenu\startupverify.txt',"w")
+        startupverifyerror.write('disabled')
+        startupverifyerror.close()
+        startupconfirmed = 'enabled ask to add this to the startup'
+    elif startupverifytext == 'disabled':
+        startupverify.close()
+        startupverifyerror = open(appdatar + '\MaxMenu\startupverify.txt',"w")
+        startupverifyerror.write('enabled')
+        startupverifyerror.close()
+        startupconfirmed = 'disabled ask to add this to the startup'
+
+
         
 while True:
     print(Fore.GREEN + "███╗░░░███╗░█████╗░██╗░░██╗      ███╗░░░███╗███████╗███╗░░██╗██╗░░░██╗")
@@ -232,6 +277,7 @@ while True:
     print("9.change wallpaper             10.change color")
     print("11.shell mode           12.remove from startup")
     print("13.lock this file          14.unlock this file")
+    print(f"15.{startupconfirmed}                        ")
 
     c = input("\nEnter number function: ")
     
@@ -296,5 +342,8 @@ while True:
         after()
     elif c == "14":
         unlock()
+        after()
+    elif c == "15":
+        addremove()
         after()
         
