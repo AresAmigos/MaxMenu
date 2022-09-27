@@ -99,6 +99,7 @@ def ifconfig():
     try:
         r = requests.get('https://ifconfig.me')
         print("\nYour public ip is: " + r.text)
+        sleep(1)
     except:
         print("No internet connection")
 def changepws():
