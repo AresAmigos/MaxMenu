@@ -147,25 +147,9 @@ def removestup():
         print("File removed from the startup")
         sleep(1)
 def lock():
-    lockverify = subprocess.getoutput('if not exist "%appdata%\MaxMenu\password.txt" echo no')
-    pwcrypted = open(appdatar + '\MaxMenu\password.txt',"r")
-    pwdelcazzo = (pwcrypted.read())
-    pwcrypted.close()
+    lockverify = subprocess.getoutput('if not exist "%appdata%\MaxMenu\password.txt" (echo no) else (echo oc)')
     if lockverify == 'no':
-        if len(pwdelcazzo) > 0:
-            subprocess.getoutput('if not exist "%appdata%\MaxMenu" md "%appdata%\MaxMenu"')
-            subprocess.getoutput('attrib +h "%appdata%\MaxMenu"')
-            subprocess.getoutput('type nul > "%appdata%\MaxMenu\password.txt"')
-            subprocess.getoutput('attrib + h "%appdata%\MaxMenu\password.txt"')
-            password = input('Enter a password: ')
-            while password == 'exit':
-                print('\nPassword cannot be "exit"')
-                password = input('\nEnter a password: ')
-            lockpw = open(appdatar + '\MaxMenu\password.txt',"w")
-            lockpw.write(password)
-            lockpw.close()
-    elif len(pwdelcazzo) == 0:
-        subprocess.getoutput('if not exist "%appdata%\MaxMenu" md "%appdata%\MaxMenu"')
+        subprocess.getoutput('md "%appdata%\MaxMenu"')
         subprocess.getoutput('attrib +h "%appdata%\MaxMenu"')
         subprocess.getoutput('type nul > "%appdata%\MaxMenu\password.txt"')
         subprocess.getoutput('attrib + h "%appdata%\MaxMenu\password.txt"')
@@ -176,6 +160,25 @@ def lock():
         lockpw = open(appdatar + '\MaxMenu\password.txt',"w")
         lockpw.write(password)
         lockpw.close()
+    elif lockverify == 'oc':
+        pwcrypted = open(appdatar + '\MaxMenu\password.txt',"r")
+        pwdelcazzo = (pwcrypted.read())
+        pwcrypted.close()
+        if len(pwdelcazzo) == 0:
+            subprocess.getoutput('if not exist "%appdata%\MaxMenu" md "%appdata%\MaxMenu"')
+            subprocess.getoutput('attrib +h "%appdata%\MaxMenu"')
+            subprocess.getoutput('type nul > "%appdata%\MaxMenu\password.txt"')
+            subprocess.getoutput('attrib + h "%appdata%\MaxMenu\password.txt"')
+            pwcrypted = open(appdatar + '\MaxMenu\password.txt',"r")
+            pwdelcazzo = (pwcrypted.read())
+            pwcrypted.close()
+            password = input('Enter a password: ')
+            while password == 'exit':
+                print('\nPassword cannot be "exit"')
+                password = input('\nEnter a password: ')
+            lockpw = open(appdatar + '\MaxMenu\password.txt',"w")
+            lockpw.write(password)
+            lockpw.close()
     else:
         oldpassword = input('Enter the old password: ')
         pwcrypted = open(appdatar + '\MaxMenu\password.txt',"r")
