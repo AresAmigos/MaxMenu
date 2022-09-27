@@ -6,11 +6,33 @@ import sys
 from colorama import Fore, Back, Style
 from colorama import init
 
+
+
+    
+
 appdatar = os.environ["APPDATA"]
-#startup
+systemdrive = os.environ["SYSTEMDRIVE"]
 startup = appdatar + '\Microsoft\Windows\Start Menu\Programs\Startup'
 filename = os.path.basename(__file__)
+#C:\Users\free\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
 darkness = subprocess.getoutput(f'if exist "{startup}\{filename}" (echo ok) else (echo no)')
+
+porta = subprocess.getoutput('if exist "%appdata%\MaxMenu\password.txt" echo lol')
+if porta == 'lol':
+    pwcrypted = open(appdatar + '\MaxMenu\password.txt',"r")
+    pwdelcazzo = (pwcrypted.read())
+    pwcrypted.close()
+    if len(pwdelcazzo) > 0:
+        auth = input('Enter the password: ')
+        if auth != pwdelcazzo:
+            if auth != 'exit':  
+                print('\nEnter "exit" to exit')
+        while auth != pwdelcazzo:
+            if auth == 'exit':
+                pwcrypted.close()
+                sys.exit()
+            auth = input('\nWrong password.\nEnter the password: ')
+        os.system('cls')
 
 if os.getcwd() != startup:
     if darkness == "no":
@@ -125,7 +147,74 @@ def removestup():
         subprocess.getoutput(f'if exist "{startup}\{filename}" del "{startup}\{filename}"/q')
         print("File removed from the startup")
         sleep(1)
-
+def lock():
+    lockverify = subprocess.getoutput('if not exist "%appdata%\MaxMenu\password.txt" echo no')
+    pwcrypted = open(appdatar + '\MaxMenu\password.txt',"r")
+    pwdelcazzo = (pwcrypted.read())
+    pwcrypted.close()
+    if lockverify == 'no':
+        if len(pwdelcazzo) > 0:
+            subprocess.getoutput('if not exist "%appdata%\MaxMenu" md "%appdata%\MaxMenu"')
+            subprocess.getoutput('attrib +h "%appdata%\MaxMenu"')
+            subprocess.getoutput('type nul > "%appdata%\MaxMenu\password.txt"')
+            subprocess.getoutput('attrib + h "%appdata%\MaxMenu\password.txt"')
+            password = input('Enter a password: ')
+            while password == 'exit':
+                print('\nPassword cannot be "exit"')
+                password = input('\nEnter a password: ')
+            lockpw = open(appdatar + '\MaxMenu\password.txt',"w")
+            lockpw.write(password)
+            lockpw.close()
+    elif len(pwdelcazzo) == 0:
+        subprocess.getoutput('if not exist "%appdata%\MaxMenu" md "%appdata%\MaxMenu"')
+        subprocess.getoutput('attrib +h "%appdata%\MaxMenu"')
+        subprocess.getoutput('type nul > "%appdata%\MaxMenu\password.txt"')
+        subprocess.getoutput('attrib + h "%appdata%\MaxMenu\password.txt"')
+        password = input('Enter a password: ')
+        while password == 'exit':
+            print('\nPassword cannot be "exit"')
+            password = input('\nEnter a password: ')
+        lockpw = open(appdatar + '\MaxMenu\password.txt',"w")
+        lockpw.write(password)
+        lockpw.close()
+    else:
+        oldpassword = input('Enter the old password: ')
+        pwcrypted = open(appdatar + '\MaxMenu\password.txt',"r")
+        pwdelcazzo = (pwcrypted.read())
+        pwcrypted.close()
+        if oldpassword != pwdelcazzo:
+            if oldpassword != 'exit':
+                print('\nEnter "exit" to exit')
+        while oldpassword != pwdelcazzo:
+            if oldpassword == 'exit':
+                pwcrypted.close()
+                break
+            oldpassword = input('\nYou have entered a wrong password.\nEnter the old password: ')
+        if oldpassword != 'exit':
+            newpassword = input('Enter new password: ')
+            while newpassword == 'exit':
+                print('\nPassword cannot be "exit"')
+                newpassword = input('\nEnter a password: ')
+            lockpw = open(appdatar + '\MaxMenu\password.txt',"w")
+            lockpw.write(newpassword)
+            lockpw.close()
+def unlock():
+    oldpassword = input('Enter the old password: ')
+    pwcrypted = open(appdatar + '\MaxMenu\password.txt',"r")
+    pwdelcazzo = (pwcrypted.read())
+    pwcrypted.close()
+    if oldpassword != pwdelcazzo:
+        if oldpassword != 'exit':
+            print('\nEnter "exit" to exit')
+    while oldpassword != pwdelcazzo:
+        if oldpassword == 'exit':
+            break
+        oldpassword = input('\nWrong password.\nEnter the old password: ')
+    if oldpassword != 'exit':
+        lockpw = open(appdatar + '\MaxMenu\password.txt',"w")
+        lockpw.write('')
+        lockpw.close()
+        
 while True:
     print(Fore.GREEN + "███╗░░░███╗░█████╗░██╗░░██╗      ███╗░░░███╗███████╗███╗░░██╗██╗░░░██╗")
     print("████╗░████║██╔══██╗╚██╗██╔╝      ████╗░████║██╔════╝████╗░██║██║░░░██║")
@@ -140,6 +229,7 @@ while True:
     print("7.show my ip                 8.change password")
     print("9.change wallpaper             10.change color")
     print("11.shell mode           12.remove from startup")
+    print("13.lock this file          14.unlock this file")
 
     c = input("\nEnter number function: ")
     
@@ -199,3 +289,10 @@ while True:
     elif c == "12":
         removestup()
         os.system('cls')
+    elif c == "13":
+        lock()
+        after()
+    elif c == "14":
+        unlock()
+        after()
+        
