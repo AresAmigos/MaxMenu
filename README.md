@@ -1,4 +1,4 @@
-# MaxMenu v1.53
+# MaxMenu v1.6
 
 Tool for windows make many actions easier
 
