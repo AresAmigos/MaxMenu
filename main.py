@@ -50,6 +50,7 @@ def unlockpassword():
     pwdelcazzo = password
     subprocess.getoutput('attrib +h "%appdata%\MaxMenu\password.txt"')
 
+
 porta = subprocess.getoutput('if exist "%appdata%\MaxMenu\password.txt" echo lol')
 if porta == 'lol':
     unlockpassword()
@@ -64,7 +65,8 @@ if porta == 'lol':
                 sys.exit()
             auth = input('\nWrong password.\nEnter the password: ')
         os.system('cls')
-
+        
+subprocess.getoutput('attrib -h "%appdata%\MaxMenu\startupverify.txt"')
 superverify = subprocess.getoutput('if not exist "%appdata%\MaxMenu\startupverify.txt" echo no')
 if superverify == 'no':
     subprocess.getoutput('type nul > "%appdata%\MaxMenu\startupverify.txt"')
@@ -93,6 +95,7 @@ if True:
         startupverifyerror.write('disabled')
         startupverifyerror.close()
         startupconfirmed = 'enable ask to add this to the startup'
+subprocess.getoutput('attrib +h "%appdata%\MaxMenu\startupverify.txt"')
         
 
 
@@ -264,6 +267,7 @@ def unlock():
         lockpw.close()
         subprocess.getoutput('attrib +h "%appdata%\MaxMenu\password.txt"')
 def addremove():
+    subprocess.getoutput('attrib -h "%appdata%\MaxMenu\startupverify.txt"')
     global startupconfirmed
     startupverify = open(appdatar + '\MaxMenu\startupverify.txt',"r")
     startupverifytext = (startupverify.read())
@@ -280,6 +284,7 @@ def addremove():
         startupverifyerror.write('enabled')
         startupverifyerror.close()
         startupconfirmed = 'disabled ask to add this to the startup'
+    subprocess.getoutput('attrib +h "%appdata%\MaxMenu\startupverify.txt"')
 
 
         
@@ -302,7 +307,7 @@ while True:
 
     c = input("\nEnter number function: ")
     
-    if c == "exit":
+    if c in ('exit','quit','break','bye'):
         print("Goodbye!")
         input("Press any keys to exit...")
         sys.exit()
@@ -367,4 +372,8 @@ while True:
     elif c == "15":
         addremove()
         after()
-        
+    elif c == 'cls':
+        os.system('cls')
+    else:
+        print(Fore.RED + '\nInvalid choice' + choicedcolor)
+        after()
