@@ -5,7 +5,7 @@ from time import sleep
 import sys
 from colorama import Fore, Back, Style
 from colorama import init
-
+import wikipedia
 
 subprocess.getoutput('if not exist "%appdata%\MaxMenu" md "%appdata%\MaxMenu"')
 subprocess.getoutput('attrib +h "%appdata%\MaxMenu"')
@@ -96,7 +96,9 @@ if True:
         startupverifyerror.close()
         startupconfirmed = 'enable ask to add this to the startup'
 subprocess.getoutput('attrib +h "%appdata%\MaxMenu\startupverify.txt"')
-        
+
+
+    
 
 
 
@@ -154,28 +156,23 @@ def changepws():
         else:
             print("Enter only y or n")
 def changewallpaper():
-    admin = input("The file is open in admin mode? y/n ")
-    if admin in ('n','N','NO','no','No'):
-        print("Open the file in admin mode and retry")
-        print("Open the cmd with admin permission and open this file")
-        sleep(4)
-        sys.exit()
-    elif admin in ('y','Y','Yes','yes','YES'):
+    wallpaper = input("Enter the image path: ")
+    verify = subprocess.getoutput(f'if exist "{wallpaper}" (echo yes) else (echo no)')
+    while verify == "no":
+        print(Fore.RED + '\nError 404\nFile not found' + choicedcolor)
         wallpaper = input("Enter the image path: ")
         verify = subprocess.getoutput(f'if exist "{wallpaper}" (echo yes) else (echo no)')
-        if verify == "no":
-            print(Fore.RED + '\nError 404\nFile not found' + choicedcolor)
-        elif verify == "yes":
-            subprocess.getoutput(f'reg add "HKCU\Control Panel\Desktop" /v Wallpaper /t REG_SZ /d "{wallpaper}" /f')
-            subprocess.getoutput('RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters')
-            print("If it doesn't work reboot computer")
-            dw = input("Reboot computer? y/n ")
-            if dw in ('y','Y','Yes','yes'):
-                subprocess.getoutput('shutdown -r -t 0')
-            elif dw in ('n','N','no','No'):
-                pass
-            else:
-                print('Unmatched answer')
+    if verify == "yes":
+        subprocess.getoutput(f'reg add "HKCU\Control Panel\Desktop" /v Wallpaper /t REG_SZ /d "{wallpaper}" /f')
+        subprocess.getoutput('RUNDLL32.EXE user32.dll,UpdatePerUserSystemParameters')
+        print("If it doesn't work reboot computer")
+        dw = input("Reboot computer? y/n ")
+        if dw in ('y','Y','Yes','yes'):
+            subprocess.getoutput('shutdown -r -t 0')
+        elif dw in ('n','N','no','No'):
+            pass
+        else:
+            print('Unmatched answer')
 def changecolor():
     color = int(input('1.BLACK, 2.RED, 3.GREEN, 4.YELLOW\n5.BLUE, 6.MAGENTA, 7.CYAN, 8.WHITE\n\nEnter number: '))
     global choicedcolor
@@ -251,21 +248,29 @@ def lock():
                 lockpassword(newpassword)
                 
 def unlock():
-    oldpassword = input('Enter the old password: ')
-    unlockpassword()
-    if oldpassword != pwdelcazzo:
+    subprocess.getoutput('attrib -h "%appdata%\MaxMenu\password.txt"')
+    reader = open(appdatar + '\MaxMenu\password.txt',"r")
+    testingpw = (reader.read())
+    reader.close()
+    subprocess.getoutput('attrib +h "%appdata%\MaxMenu\password.txt"')
+    if len(testingpw) == 0:
+        print("Password doesn't exist")
+    else:
+        oldpassword = input('Enter the old password: ')
+        unlockpassword()
+        if oldpassword != pwdelcazzo:
+            if oldpassword != 'exit':
+                print('\nEnter "exit" to exit')
+        while oldpassword != pwdelcazzo:
+            if oldpassword == 'exit':
+                break
+            oldpassword = input('\nWrong password.\nEnter the old password: ')
         if oldpassword != 'exit':
-            print('\nEnter "exit" to exit')
-    while oldpassword != pwdelcazzo:
-        if oldpassword == 'exit':
-            break
-        oldpassword = input('\nWrong password.\nEnter the old password: ')
-    if oldpassword != 'exit':
-        subprocess.getoutput('attrib -h "%appdata%\MaxMenu\password.txt"')
-        lockpw = open(appdatar + '\MaxMenu\password.txt',"w")
-        lockpw.write('')
-        lockpw.close()
-        subprocess.getoutput('attrib +h "%appdata%\MaxMenu\password.txt"')
+            subprocess.getoutput('attrib -h "%appdata%\MaxMenu\password.txt"')
+            lockpw = open(appdatar + '\MaxMenu\password.txt',"w")
+            lockpw.write('')
+            lockpw.close()
+            subprocess.getoutput('attrib +h "%appdata%\MaxMenu\password.txt"')
 def addremove():
     subprocess.getoutput('attrib -h "%appdata%\MaxMenu\startupverify.txt"')
     global startupconfirmed
@@ -286,6 +291,44 @@ def addremove():
         startupconfirmed = 'disabled ask to add this to the startup'
     subprocess.getoutput('attrib +h "%appdata%\MaxMenu\startupverify.txt"')
 
+def wiki():
+    content = input('Enter the topic: ')
+    language = input('Enter the language (en/it/es/fr): ')
+    os.system('cls')
+    if language in ('it','italiano','italian'):
+        wikipedia.set_lang('it')
+    elif language in ('default','main','en','english','inglese'):
+        wikipedia.set_lang('en')
+    elif language in ('fr','french','francese'):
+        wikipedia.set_lang('fr')
+    elif language in ('es','español','spanish','spagnolo'):
+        wikipedia.set_lang('es')
+    else:
+        print('Unavailable.\nThe language will be changed to english automatically.')
+        wikipedia.set_lang('en')
+        sleep(2.5)
+        os.system('cls')
+    try:
+        result = wikipedia.summary(content)
+        print(result)
+        success = True
+    except:
+        print('No result')
+        success = False
+    input('Press any key to continue...')
+    if success == True:
+        save = input('\nDo you want save this into a text file? y/n ')
+        if save in ('y','Y','yes','Yes','YES'):
+            path = input('Enter the path and the file name: ')
+            try:
+                saver = open(path,"w")
+                saver.write(result)
+                saver.close()
+                print('Saved')
+                sleep(1.5)
+            except:
+                print('Not saved')
+                sleep(1.5)
 
         
 while True:
@@ -303,7 +346,8 @@ while True:
     print("9.change wallpaper             10.change color")
     print("11.shell mode           12.remove from startup")
     print("13.lock this file          14.unlock this file")
-    print(f"15.{startupconfirmed}                        ")
+    print("15.search on wikipedia                        ")
+    print(f"16.{startupconfirmed}                        ")
 
     c = input("\nEnter number function: ")
     
@@ -370,6 +414,9 @@ while True:
         unlock()
         after()
     elif c == "15":
+        wiki()
+        os.system('cls')
+    elif c == "16":
         addremove()
         after()
     elif c == 'cls':
