@@ -39,6 +39,16 @@ def unlockpassword():
     pwdelcazzo = mm
     subprocess.getoutput('attrib +h "%appdata%\MaxMenu\password.txt"')
 
+def changeunlockpassword():
+    subprocess.getoutput('attrib -h "%appdata%\MaxMenu\password.txt"')
+    decrypter = open(appdatar + '\MaxMenu\password.txt',"r")
+    global m
+    pwdelcazzo = (decrypter.read())
+    decrypter.close()
+    m = ""
+    for c in pwdelcazzo:
+        m += chr(ord(c)-3)
+    subprocess.getoutput('attrib +h "%appdata%\MaxMenu\password.txt"')
 
 porta = subprocess.getoutput('if exist "%appdata%\MaxMenu\password.txt" echo lol')
 if porta == 'lol':
@@ -220,15 +230,14 @@ def lock():
             lockpassword(password)
         else:
             oldpassword = input('Enter the old password: ')
-            unlockpassword()
-            if oldpassword != pwdelcazzo:
+            changeunlockpassword()
+            if oldpassword != m:
                 if oldpassword != 'exit':
                     print('\nEnter "exit" to exit')
-            while oldpassword != pwdelcazzo:
+            while oldpassword != m:
                 if oldpassword == 'exit':
-                    pwcrypted.close()
                     break
-                oldpassword = input('\nYou have entered a wrong password.\nEnter the old password: ')
+                oldpassword = input('\nWrong password.\nEnter the old password: ')
             if oldpassword != 'exit':
                 newpassword = input('Enter new password: ')
                 while newpassword == 'exit':
