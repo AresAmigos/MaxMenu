@@ -19,16 +19,11 @@ darkness = subprocess.getoutput(f'if exist "{startup}\{filename}" (echo ok) else
 
 def lockpassword(password):
     subprocess.getoutput('attrib -h "%appdata%\MaxMenu\password.txt"')
-    if len(password) == 2:
-        password = password[-1:] + password[:-1]
-    elif len(password) == 3:
-        password = password[1:2] + password[-1:] + password[:1]
-    elif len(password) == 4:
-        password = password[-2:] + password[:2]
-    else:
-        password = password[-2:] + password[1:-2] + password[:1]
+    mm = ""
+    for c in password:
+        mm += chr(ord(c)+3)
     encrypter = open(appdatar + '\MaxMenu\password.txt',"w")
-    encrypter.write(password)
+    encrypter.write(mm)
     encrypter.close()
     subprocess.getoutput('attrib +h "%appdata%\MaxMenu\password.txt"')
     
@@ -38,16 +33,10 @@ def unlockpassword():
     global pwdelcazzo
     pwdelcazzo = (decrypter.read())
     decrypter.close()
-    password = pwdelcazzo
-    if len(password) == 2:
-        password = password[-1:] + password[:-1]
-    elif len(password) == 3:
-        password = password[-1:] + password[:1] + password[1:2]
-    elif len(password) == 4:
-        password = password[-2:] + password[:2]
-    else:
-        password = password[-1:] + password[2:-1] + password[:2]
-    pwdelcazzo = password
+    mm = ""
+    for c in pwdelcazzo:
+        mm += chr(ord(c)-3)
+    pwdelcazzo = mm
     subprocess.getoutput('attrib +h "%appdata%\MaxMenu\password.txt"')
 
 
