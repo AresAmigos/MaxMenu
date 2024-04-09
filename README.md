@@ -1,4 +1,4 @@
-# AltMenu > Maxmenu
+# AltMenu = Maxmenu
 
 Tool for windows make many actions easier
 
